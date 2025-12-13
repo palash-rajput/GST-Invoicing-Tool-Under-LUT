@@ -1736,6 +1736,8 @@ document.getElementById("addItemBtn").onclick = () => {
   div.querySelector(".delete-item-btn").addEventListener("click", () => {
     div.remove();
     updateItems();
+    // Save after deleting item
+    setTimeout(autoSave, 100);
   });
 };
 
@@ -1956,6 +1958,267 @@ document.getElementById("downloadPdfBtn").addEventListener("click", async functi
   }
 });
 
+/* LOCALSTORAGE PERSISTENCE */
+const STORAGE_KEY = 'invoiceToolData';
+
+// Save all form data to localStorage
+function saveToLocalStorage() {
+  const data = {
+    // Step 1: Your Information
+    companyName: document.getElementById("companyName").value,
+    gstin: document.getElementById("gstin").value,
+    pan: document.getElementById("pan").value,
+    companyAddressLine1: document.getElementById("companyAddressLine1").value,
+    companyCity: document.getElementById("companyCity").value,
+    companyState: document.getElementById("companyState").value,
+    companyCountry: document.getElementById("companyCountry").value,
+    companyPinCode: document.getElementById("companyPinCode").value,
+    companyEmail: document.getElementById("companyEmail").value,
+    companyPhone: document.getElementById("companyPhone").value,
+    companyLogo: document.getElementById("p-companyLogo").src, // Save the base64 image
+
+    // Step 2: Invoice Details
+    invoiceNumber: document.getElementById("invoiceNumber").value,
+    invoiceDate: document.getElementById("invoiceDate").value,
+    lutNumber: document.getElementById("lutNumber").value,
+    invoiceCurrency: document.getElementById("invoiceCurrency").value,
+    exchangeRate: document.getElementById("exchangeRate").value,
+    placeOfSupply: document.getElementById("placeOfSupply").value,
+
+    // Step 3: Client Information
+    clientCompany: document.getElementById("clientCompany").value,
+    clientPerson: document.getElementById("clientPerson").value,
+    clientAddressLine1: document.getElementById("clientAddressLine1").value,
+    clientState: document.getElementById("clientState").value,
+    clientPinCode: document.getElementById("clientPinCode").value,
+    clientCountrySelect: document.getElementById("clientCountrySelect").value,
+    clientEmail: document.getElementById("clientEmail").value,
+    clientGSTIN: document.getElementById("clientGSTIN").value,
+
+    // Step 4: Service Items (dynamic)
+    serviceItems: Array.from(document.querySelectorAll(".item")).map(item => ({
+      title: item.querySelector(".title").value,
+      desc: item.querySelector(".desc").value,
+      sac: item.querySelector(".sac").value,
+      amt: item.querySelector(".amt").value
+    })),
+
+    // Step 5: Payment Terms
+    supportEmail: document.getElementById("supportEmail").value,
+    dueDays: document.getElementById("dueDays").value,
+    paymentLink: document.getElementById("paymentLink").value,
+    bankDetailsToggle: document.getElementById("bankDetailsToggle").checked,
+    bankName: document.getElementById("bankName").value,
+    bankHolder: document.getElementById("bankHolder").value,
+    bankNumber: document.getElementById("bankNumber").value,
+    bankIFSC: document.getElementById("bankIFSC").value,
+    bankBranch: document.getElementById("bankBranch").value,
+    qrCodeToggle: document.getElementById("qrCodeToggle").checked,
+    qrImage: document.getElementById("p-qrImage").src, // Save the base64 image
+
+    // Step 6: Signature
+    signatureName: document.getElementById("signatureName").value,
+    signatureTitle: document.getElementById("signatureTitle").value,
+    signatureImage: document.getElementById("p-signatureImage").src // Save the base64 image
+  };
+
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch (e) {
+    console.error("Failed to save to localStorage:", e);
+  }
+}
+
+// Restore all form data from localStorage
+function restoreFromLocalStorage() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return false; // No saved data exists
+
+    const data = JSON.parse(saved);
+
+    // Step 1: Your Information
+    document.getElementById("companyName").value = data.companyName || "";
+    document.getElementById("gstin").value = data.gstin || "";
+    document.getElementById("pan").value = data.pan || "";
+    document.getElementById("companyAddressLine1").value = data.companyAddressLine1 || "";
+    document.getElementById("companyCity").value = data.companyCity || "";
+    document.getElementById("companyState").value = data.companyState || "";
+    document.getElementById("companyCountry").value = data.companyCountry || "";
+    document.getElementById("companyPinCode").value = data.companyPinCode || "";
+    document.getElementById("companyEmail").value = data.companyEmail || "";
+    document.getElementById("companyPhone").value = data.companyPhone || "";
+
+    // Restore company logo
+    if (data.companyLogo && data.companyLogo !== "" && !data.companyLogo.endsWith("/")) {
+      document.getElementById("p-companyLogo").src = data.companyLogo;
+      document.getElementById("p-companyLogo").style.display = "block";
+    }
+
+    // Step 2: Invoice Details
+    document.getElementById("invoiceNumber").value = data.invoiceNumber || "";
+    document.getElementById("invoiceDate").value = data.invoiceDate || "";
+    document.getElementById("lutNumber").value = data.lutNumber || "";
+    document.getElementById("invoiceCurrency").value = data.invoiceCurrency || "USD";
+    document.getElementById("exchangeRate").value = data.exchangeRate || "";
+    document.getElementById("placeOfSupply").value = data.placeOfSupply || "Karnataka";
+
+    // Step 3: Client Information
+    document.getElementById("clientCompany").value = data.clientCompany || "";
+    document.getElementById("clientPerson").value = data.clientPerson || "";
+    document.getElementById("clientAddressLine1").value = data.clientAddressLine1 || "";
+    document.getElementById("clientState").value = data.clientState || "";
+    document.getElementById("clientPinCode").value = data.clientPinCode || "";
+    document.getElementById("clientCountrySelect").value = data.clientCountrySelect || "United States of America";
+    document.getElementById("clientEmail").value = data.clientEmail || "";
+    document.getElementById("clientGSTIN").value = data.clientGSTIN || "";
+
+    // Step 4: Service Items (dynamic restoration)
+    if (data.serviceItems && data.serviceItems.length > 0) {
+      // Clear existing items first
+      document.querySelectorAll(".item").forEach(item => item.remove());
+
+      // Add each saved item
+      data.serviceItems.forEach(itemData => {
+        document.getElementById("addItemBtn").click();
+
+        // Wait for DOM update, then populate the last added item
+        setTimeout(() => {
+          const items = document.querySelectorAll(".item");
+          const lastItem = items[items.length - 1];
+          if (lastItem) {
+            lastItem.querySelector(".title").value = itemData.title || "";
+            lastItem.querySelector(".desc").value = itemData.desc || "";
+            lastItem.querySelector(".sac").value = itemData.sac || "";
+            lastItem.querySelector(".amt").value = itemData.amt || "";
+
+            // Trigger input events to update preview
+            lastItem.querySelector(".title").dispatchEvent(new Event("input"));
+            lastItem.querySelector(".desc").dispatchEvent(new Event("input"));
+            lastItem.querySelector(".sac").dispatchEvent(new Event("input"));
+            lastItem.querySelector(".amt").dispatchEvent(new Event("input"));
+          }
+        }, 10);
+      });
+    }
+
+    // Step 5: Payment Terms
+    document.getElementById("supportEmail").value = data.supportEmail || "";
+    document.getElementById("dueDays").value = data.dueDays || "";
+    document.getElementById("paymentLink").value = data.paymentLink || "";
+
+    // Restore bank details toggle
+    document.getElementById("bankDetailsToggle").checked = data.bankDetailsToggle || false;
+    document.getElementById("bankDetailsToggle").dispatchEvent(new Event("change"));
+
+    document.getElementById("bankName").value = data.bankName || "";
+    document.getElementById("bankHolder").value = data.bankHolder || "";
+    document.getElementById("bankNumber").value = data.bankNumber || "";
+    document.getElementById("bankIFSC").value = data.bankIFSC || "";
+    document.getElementById("bankBranch").value = data.bankBranch || "";
+
+    // Restore QR toggle
+    document.getElementById("qrCodeToggle").checked = data.qrCodeToggle || false;
+    document.getElementById("qrCodeToggle").dispatchEvent(new Event("change"));
+
+    // Restore QR image
+    if (data.qrImage && data.qrImage !== "" && !data.qrImage.endsWith("/")) {
+      document.getElementById("p-qrImage").src = data.qrImage;
+      document.getElementById("p-qrImage").style.display = "block";
+      document.querySelector(".wise-bank-code").style.display = "block";
+    }
+
+    // Step 6: Signature
+    document.getElementById("signatureName").value = data.signatureName || "";
+    document.getElementById("signatureTitle").value = data.signatureTitle || "";
+
+    // Restore signature image
+    if (data.signatureImage && data.signatureImage !== "" && !data.signatureImage.endsWith("/")) {
+      document.getElementById("p-signatureImage").src = data.signatureImage;
+      document.getElementById("p-signatureImage").style.display = "block";
+    }
+
+    // Trigger all input events to update previews
+    setTimeout(() => {
+      document.getElementById("companyName").dispatchEvent(new Event("input"));
+      document.getElementById("gstin").dispatchEvent(new Event("input"));
+      document.getElementById("pan").dispatchEvent(new Event("input"));
+      document.getElementById("companyAddressLine1").dispatchEvent(new Event("input"));
+      document.getElementById("companyCity").dispatchEvent(new Event("input"));
+      document.getElementById("companyState").dispatchEvent(new Event("input"));
+      document.getElementById("companyCountry").dispatchEvent(new Event("input"));
+      document.getElementById("companyPinCode").dispatchEvent(new Event("input"));
+      document.getElementById("companyEmail").dispatchEvent(new Event("input"));
+      document.getElementById("companyPhone").dispatchEvent(new Event("input"));
+      document.getElementById("invoiceNumber").dispatchEvent(new Event("input"));
+      document.getElementById("invoiceDate").dispatchEvent(new Event("input"));
+      document.getElementById("lutNumber").dispatchEvent(new Event("input"));
+      document.getElementById("clientCompany").dispatchEvent(new Event("input"));
+      document.getElementById("clientPerson").dispatchEvent(new Event("input"));
+      document.getElementById("clientAddressLine1").dispatchEvent(new Event("input"));
+      document.getElementById("clientState").dispatchEvent(new Event("input"));
+      document.getElementById("clientPinCode").dispatchEvent(new Event("input"));
+      document.getElementById("clientCountrySelect").dispatchEvent(new Event("input"));
+      document.getElementById("clientEmail").dispatchEvent(new Event("input"));
+      document.getElementById("clientGSTIN").dispatchEvent(new Event("input"));
+      document.getElementById("placeOfSupply").dispatchEvent(new Event("input"));
+      document.getElementById("signatureName").dispatchEvent(new Event("input"));
+      document.getElementById("signatureTitle").dispatchEvent(new Event("input"));
+      document.getElementById("paymentLink").dispatchEvent(new Event("input"));
+      document.getElementById("supportEmail").dispatchEvent(new Event("input"));
+      document.getElementById("dueDays").dispatchEvent(new Event("input"));
+      updatePaymentTerms();
+      updateBankDetails();
+    }, 100);
+
+    return true; // Successfully restored
+  } catch (e) {
+    console.error("Failed to restore from localStorage:", e);
+    return false;
+  }
+}
+
+// Clear saved data from localStorage
+function clearLocalStorage() {
+  localStorage.removeItem(STORAGE_KEY);
+}
+
+// Debounced auto-save function (saves 500ms after user stops typing)
+let saveTimeout;
+function autoSave() {
+  clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(() => {
+    saveToLocalStorage();
+  }, 500);
+}
+
+// Setup auto-save listeners on all form fields
+function setupAutoSave() {
+  // Get all input, textarea, and select elements
+  const allInputs = document.querySelectorAll('input:not([type="file"]):not([type="button"]), textarea, select');
+
+  allInputs.forEach(input => {
+    input.addEventListener('input', autoSave);
+    input.addEventListener('change', autoSave);
+  });
+
+  // Also save when items are added/deleted
+  const addItemBtn = document.getElementById('addItemBtn');
+  if (addItemBtn) {
+    const originalClick = addItemBtn.onclick;
+    addItemBtn.onclick = () => {
+      originalClick();
+      // Save after item is added and populated
+      setTimeout(autoSave, 100);
+    };
+  }
+
+  // Save when images are uploaded
+  document.getElementById('companyLogo').addEventListener('change', () => setTimeout(autoSave, 100));
+  document.getElementById('signatureImage').addEventListener('change', () => setTimeout(autoSave, 100));
+  document.getElementById('qrImage').addEventListener('change', () => setTimeout(autoSave, 100));
+}
+
 /* LOAD SAMPLE DATA */
 function loadSampleData() {
   // Step 1: Your Information
@@ -2050,8 +2313,34 @@ function loadSampleData() {
   updateBankDetails();
 }
 
-// Load sample data on page load
-window.addEventListener("DOMContentLoaded", loadSampleData);
+// Initialize app on page load
+window.addEventListener("DOMContentLoaded", () => {
+  // Try to restore saved data first
+  const hasRestoredData = restoreFromLocalStorage();
+
+  // Only load sample data if no saved data exists
+  if (!hasRestoredData) {
+    loadSampleData();
+  }
+
+  // Setup auto-save after initial load
+  setupAutoSave();
+});
+
+// Optional: Add a button to clear saved data (for development/testing)
+// Uncomment the code below to add a "Clear Saved Data" button to the form
+/*
+const clearBtn = document.createElement('button');
+clearBtn.textContent = 'Clear Saved Data';
+clearBtn.style.cssText = 'position: fixed; bottom: 20px; left: 20px; padding: 8px 16px; background: #ef4444; color: white; border: none; border-radius: 6px; cursor: pointer; z-index: 1000;';
+clearBtn.onclick = () => {
+  if (confirm('Are you sure you want to clear all saved data?')) {
+    clearLocalStorage();
+    location.reload();
+  }
+};
+document.body.appendChild(clearBtn);
+*/
 </script>
 
 </body>
