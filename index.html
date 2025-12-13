@@ -214,6 +214,23 @@ button#addItemBtn:hover {
   background: #1d5dd8;
 }
 
+/* Multi-column field layouts */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field label {
+  margin-top: 0;
+}
+
 .form-nav {
   position: fixed;
   bottom: 0;
@@ -758,7 +775,7 @@ hr {
   font-weight: 600;
   line-height: 20px;
   display: inline-flex;
-  text-decoration: none;
+  text-decoration: lowercase;
   transition: background-color 0.2s;
   min-width: 220px;
 }
@@ -1004,17 +1021,27 @@ hr {
             <label>Address (Line 1)</label>
             <input type="text" id="companyAddressLine1">
 
-            <label>City</label>
-            <input type="text" id="companyCity">
+            <div class="form-row">
+                <div class="form-field">
+                    <label>City</label>
+                    <input type="text" id="companyCity">
+                </div>
+                <div class="form-field">
+                    <label>State</label>
+                    <input type="text" id="companyState">
+                </div>
+            </div>
 
-            <label>State</label>
-            <input type="text" id="companyState">
-
-            <label>Country</label>
-            <input type="text" id="companyCountry">
-
-            <label>Pin Code</label>
-            <input type="text" id="companyPinCode">
+            <div class="form-row">
+                <div class="form-field">
+                    <label>Country</label>
+                    <input type="text" id="companyCountry">
+                </div>
+                <div class="form-field">
+                    <label>Pin Code</label>
+                    <input type="text" id="companyPinCode">
+                </div>
+            </div>
 
             <label>Email</label>
             <input type="email" id="companyEmail">
@@ -1030,11 +1057,16 @@ hr {
         <div class="form-step" data-step="2">
             <h2>Invoice Details</h2>
 
-            <label>Invoice Number</label>
-            <input type="text" id="invoiceNumber">
-
-            <label>Invoice Date</label>
-            <input type="date" id="invoiceDate">
+            <div class="form-row">
+                <div class="form-field">
+                    <label>Invoice Number</label>
+                    <input type="text" id="invoiceNumber">
+                </div>
+                <div class="form-field">
+                    <label>Invoice Date</label>
+                    <input type="date" id="invoiceDate">
+                </div>
+            </div>
 
             <label>LUT Number</label>
             <input type="text" id="lutNumber">
@@ -1106,8 +1138,16 @@ hr {
             <label>Address (Line 1)</label>
             <input type="text" id="clientAddressLine1">
 
-            <label>State</label>
-            <input type="text" id="clientState">
+            <div class="form-row">
+                <div class="form-field">
+                    <label>State</label>
+                    <input type="text" id="clientState">
+                </div>
+                <div class="form-field">
+                    <label>Pin Code</label>
+                    <input type="text" id="clientPinCode">
+                </div>
+            </div>
 
             <label>Country</label>
             <select id="clientCountrySelect">
@@ -1116,9 +1156,6 @@ hr {
                 <option value="Australia">Australia</option>
                 <option value="United Kingdom">United Kingdom</option>
             </select>
-
-            <label>Pin Code</label>
-            <input type="text" id="clientPinCode">
 
             <label>Email</label>
             <input type="email" id="clientEmail">
@@ -1140,17 +1177,22 @@ hr {
         <div class="form-step" data-step="5">
             <h2>Payment Terms</h2>
 
-            <label>Support Email</label>
-            <input type="text" id="supportEmail">
-
-            <label>Due Date (Days)</label>
-            <input type="number" id="dueDays">
+            <div class="form-row">
+                <div class="form-field">
+                    <label>Support Email</label>
+                    <input type="text" id="supportEmail">
+                </div>
+                <div class="form-field">
+                    <label>Due Date (Days)</label>
+                    <input type="number" id="dueDays">
+                </div>
+            </div>
 
             <label>Payment Link</label>
             <input type="url" id="paymentLink">
 
-            <div style="display: flex; align-items: center; gap: 12px; margin-top: 12px;">
-                <span>Add Bank Details?</span>
+            <div style="display: flex; align-items: center; gap: 12px; margin-top: 12px; justify-content: space-between;">
+                <span style="font-size: 12px;">Add Bank Details?</span>
                 <label class="toggle-switch">
                     <input type="checkbox" id="bankDetailsToggle">
                     <span class="toggle-slider"></span>
@@ -1173,8 +1215,8 @@ hr {
                 <label>Bank Branch</label>
                 <input type="text" id="bankBranch">
 
-                <div style="display: flex; align-items: center; gap: 12px; margin-top: 20px; margin-bottom: 12px;">
-                    <span>Add QR Code?</span>
+                <div style="display: flex; align-items: center; gap: 12px; margin-top: 20px; margin-bottom: 12px; justify-content: space-between;">
+                    <span style="font-size: 12px;">Add QR Code?</span>
                     <label class="toggle-switch">
                         <input type="checkbox" id="qrCodeToggle">
                         <span class="toggle-slider"></span>
@@ -1192,11 +1234,16 @@ hr {
         <div class="form-step" data-step="6">
             <h2>Signature</h2>
 
-            <label>Signature Name</label>
-            <input type="text" id="signatureName">
-
-            <label>Signature Title</label>
-            <input type="text" id="signatureTitle">
+            <div class="form-row">
+                <div class="form-field">
+                    <label>Signature Name</label>
+                    <input type="text" id="signatureName">
+                </div>
+                <div class="form-field">
+                    <label>Signature Title</label>
+                    <input type="text" id="signatureTitle">
+                </div>
+            </div>
 
             <label>Upload Signature</label>
             <input type="file" id="signatureImage" accept="image/*">
