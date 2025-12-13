@@ -1067,18 +1067,24 @@ hr {
                 </div>
             </div>
 
-            <label>LUT Number</label>
-            <input type="text" id="lutNumber">
 
-            <label>Invoice Currency</label>
-            <select id="invoiceCurrency">
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-                <option value="GBP">GBP</option>
-                <option value="AUD">AUD</option>
-                <option value="CAD">CAD</option>
-            </select>
-
+            <div class="form-row">
+                <div class="form-field">
+                    <label>LUT Number</label>
+                    <input type="text" id="lutNumber">
+                </div>
+                <div class="form-field">
+                      <label>Invoice Currency</label>
+                        <select id="invoiceCurrency">
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="GBP">GBP</option>
+                            <option value="AUD">AUD</option>
+                            <option value="CAD">CAD</option>
+                        </select>
+                </div>
+            </div>
+            
             <label>RBI Exchange Rate</label>
             <input type="number" id="exchangeRate" step="0.0001">
             <a href="https://www.msei.in/markets/currency/historical-data/rbireferenceratearchives" 
@@ -1128,7 +1134,7 @@ hr {
         <div class="form-step" data-step="3">
             <h2>Client Information</h2>
 
-            <label>Client Company Name</label>
+            <label>Company Name</label>
             <input type="text" id="clientCompany">
 
             <label>Contact Person</label>
@@ -1205,12 +1211,17 @@ hr {
                 <label>Account Holder</label>
                 <input type="text" id="bankHolder">
 
-                <label>Account Number</label>
-                <input type="text" id="bankNumber">
-
-                <label>IFSC Code</label>
-                <input type="text" id="bankIFSC">
-
+                <div class="form-row">
+                    <div class="form-field">
+                       <label>Account Number</label>
+                                <input type="text" id="bankNumber">
+                    </div>
+                    <div class="form-field">
+                        <label>IFSC Code</label>
+                                <input type="text" id="bankIFSC">
+                    </div>
+                </div>
+              
                 <label>Bank Branch</label>
                 <input type="text" id="bankBranch">
 
