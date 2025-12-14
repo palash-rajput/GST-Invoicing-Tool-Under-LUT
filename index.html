@@ -892,7 +892,7 @@ hr {
 #invoicePreview .payment-terms {
   border-bottom: 1px solid #3336;
   padding-top: 30px;
-  padding-bottom: 20px;
+  padding-bottom: 30px;
   padding-left: 32px;
   display: none;
 }
@@ -916,17 +916,19 @@ hr {
 
 #invoicePreview .payment-info {
   display: flex;
+  gap: 0;
+  align-items: flex-start;
 }
 
 #invoicePreview .wise-bank-code {
-  min-width: 230px;
-  min-height: 230px;
+  width: 210px;
   display: none;
   padding-right: 30px;
+  flex-shrink: 0;
 }
 
 #invoicePreview .wise-qr {
-  width: 230px;
+  width: 190px;
 }
 
 #invoicePreview .bank {
@@ -1868,9 +1870,9 @@ document.getElementById("downloadPdfBtn").addEventListener("click", async functi
     // Wait for reflow
     await new Promise(resolve => setTimeout(resolve, 100));
 
-    // Use html2canvas to capture the invoice with higher quality
+    // Use html2canvas to capture the invoice with optimized quality
     const canvas = await html2canvas(invoice, {
-      scale: 3,              // Increased from 2 to 3 for better quality
+      scale: 1.5,            // Optimized for file size while maintaining quality
       useCORS: true,
       logging: false,
       backgroundColor: "#ffffff",
@@ -1898,13 +1900,12 @@ document.getElementById("downloadPdfBtn").addEventListener("click", async functi
       format: "a4"
     });
 
-    const imgData = canvas.toDataURL("image/png");
+    const imgData = canvas.toDataURL("image/jpeg", 0.85);  // JPEG with 85% quality for smaller file size
 
     // Add image to fill full page width
     if (imgHeight <= pageHeight) {
-      // Single page - center vertically
-      const yOffset = (pageHeight - imgHeight) / 2;
-      pdf.addImage(imgData, "PNG", 0, yOffset, imgWidth, imgHeight);
+      // Single page - align to top (no vertical centering for professional appearance)
+      pdf.addImage(imgData, "JPEG", 0, 0, imgWidth, imgHeight);
     } else {
       // Multiple pages needed
       while (position < canvas.height) {
@@ -1924,14 +1925,14 @@ document.getElementById("downloadPdfBtn").addEventListener("click", async functi
           pageCanvas.width, pageCanvas.height
         );
 
-        const pageData = pageCanvas.toDataURL("image/png");
+        const pageData = pageCanvas.toDataURL("image/jpeg", 0.85);  // JPEG for smaller file size
         const pageImgHeight = (pageCanvas.height * imgWidth) / pageCanvas.width;
 
         if (position > 0) {
           pdf.addPage();
         }
 
-        pdf.addImage(pageData, "PNG", 0, 0, imgWidth, pageImgHeight);
+        pdf.addImage(pageData, "JPEG", 0, 0, imgWidth, pageImgHeight);
 
         position += pageCanvas.height;
       }
