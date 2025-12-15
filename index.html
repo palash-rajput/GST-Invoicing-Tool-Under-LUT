@@ -962,6 +962,231 @@ hr {
   text-align: right;
 }
 
+/* Dashboard Styles - Black & White with Blue Accents, matching invoice design */
+.dashboard-view {
+  min-height: 100vh;
+  background: #ffffff;
+  padding: 40px;
+}
+
+.dashboard-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #000000;
+}
+
+.dashboard-header h1 {
+  color: #000000;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-primary {
+  background: #4169E1;
+  color: white;
+  border: 2px solid #4169E1;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-primary:hover {
+  background: #2952CC;
+  border-color: #2952CC;
+}
+
+/* Spreadsheet-style table */
+.invoices-list {
+  border: 1px solid #000000;
+  background: #ffffff;
+}
+
+.invoice-table-header {
+  display: grid;
+  grid-template-columns: 180px 120px 1fr 1fr 150px 340px;
+  gap: 0;
+  padding: 12px 20px;
+  background: #f5f5f5;
+  border-bottom: 2px solid #000000;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #000000;
+  align-items: start;
+}
+
+.invoice-row {
+  display: grid;
+  grid-template-columns: 180px 120px 1fr 1fr 150px 340px;
+  gap: 0;
+  padding: 12px 20px;
+  border-bottom: 1px solid #cccccc;
+  transition: background 0.15s ease;
+  align-items: start;
+}
+
+.invoice-row:hover {
+  background: #fafafa;
+}
+
+.invoice-row:last-child {
+  border-bottom: none;
+}
+
+.invoice-cell {
+  padding-right: 12px;
+  color: #000000;
+  font-size: 14px;
+}
+
+.invoice-cell-number {
+  font-weight: 700;
+}
+
+.invoice-cell-date {
+  color: #555555;
+}
+
+.invoice-cell-client {
+  font-weight: 600;
+}
+
+.invoice-cell-person {
+  color: #666666;
+  font-size: 13px;
+}
+
+.invoice-cell-amount {
+  font-weight: 700;
+  text-align: right;
+  color: #000000;
+}
+
+.invoice-cell-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.btn-action {
+  padding: 6px 14px;
+  border: 1px solid;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  background: white;
+}
+
+.btn-edit {
+  border-color: #4169E1;
+  color: #4169E1;
+}
+
+.btn-edit:hover {
+  background: #4169E1;
+  color: white;
+}
+
+.btn-download {
+  border-color: #666666;
+  color: #666666;
+}
+
+.btn-download:hover {
+  background: #666666;
+  color: white;
+}
+
+.btn-view {
+  background: #2563eb;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-block;
+  transition: all 0.15s ease;
+  border: none;
+}
+
+.btn-view:hover {
+  background: #1d4ed8;
+}
+
+.btn-delete {
+  border-color: #DC143C;
+  color: #DC143C;
+}
+
+.btn-delete:hover {
+  background: #DC143C;
+  color: white;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: #666666;
+  border: 1px solid #cccccc;
+}
+
+.empty-state h2 {
+  font-size: 24px;
+  margin-bottom: 12px;
+  color: #000000;
+  font-weight: 700;
+}
+
+.empty-state p {
+  font-size: 16px;
+  color: #666666;
+}
+
+/* Back to Dashboard button */
+.back-to-dashboard {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #4169E1;
+  color: white;
+  border: 2px solid #4169E1;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  z-index: 1000;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.back-to-dashboard:hover {
+  background: #2952CC;
+  border-color: #2952CC;
+}
 
     </style>
 </head>
@@ -969,6 +1194,8 @@ hr {
 <body>
 
 <div class="container">
+    <!-- Back to Dashboard button (hidden when on dashboard) -->
+    <button class="back-to-dashboard" id="backToDashboardBtn" style="display: none;">← Back to Dashboard</button>
 
     <!-- LEFT SIDE FORM -->
     <div class="form-container">
@@ -1463,6 +1690,20 @@ hr {
 
 </div>
 
+<!-- Dashboard View -->
+<div class="dashboard-view" style="display: none;">
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>Invoice Management</h1>
+            <button id="createNewInvoiceBtn" class="btn-primary">+ Create New Invoice</button>
+        </div>
+
+        <div class="invoices-list">
+            <!-- Dynamically populated invoice cards -->
+        </div>
+    </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
@@ -1493,11 +1734,118 @@ prevBtn.onclick = () => {
 };
 
 nextBtn.onclick = () => {
+  // If not on the last step, just move to next step
   if (currentStep < steps.length) {
     currentStep++;
     showStep(currentStep);
   }
+  // Only finish if we're on the last step AND the button says "Finish"
+  else if (currentStep === steps.length && nextBtn.textContent === "Finish") {
+    // On last step, "Finish" button creates/saves invoice and returns to dashboard
+    finishInvoice();
+  }
 };
+
+// Finish invoice - creates new invoice or updates existing, then returns to dashboard
+function finishInvoice() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    let data = saved ? JSON.parse(saved) : { company: {}, invoices: [], currentInvoiceId: null };
+
+    if (!data.invoices) data.invoices = [];
+    if (!data.company) data.company = {};
+
+    // Save company data
+    data.company = {
+      companyName: document.getElementById("companyName").value,
+      gstin: document.getElementById("gstin").value,
+      pan: document.getElementById("pan").value,
+      companyAddressLine1: document.getElementById("companyAddressLine1").value,
+      companyCity: document.getElementById("companyCity").value,
+      companyState: document.getElementById("companyState").value,
+      companyCountry: document.getElementById("companyCountry").value,
+      companyPinCode: document.getElementById("companyPinCode").value,
+      companyEmail: document.getElementById("companyEmail").value,
+      companyPhone: document.getElementById("companyPhone").value,
+      companyLogo: document.getElementById("p-companyLogo").src
+    };
+
+    // Create invoice data
+    const invoiceData = {
+      invoiceNumber: document.getElementById("invoiceNumber").value,
+      invoiceDate: document.getElementById("invoiceDate").value,
+      lutNumber: document.getElementById("lutNumber").value,
+      invoiceCurrency: document.getElementById("invoiceCurrency").value,
+      exchangeRate: document.getElementById("exchangeRate").value,
+      placeOfSupply: document.getElementById("placeOfSupply").value,
+
+      clientCompany: document.getElementById("clientCompany").value,
+      clientPerson: document.getElementById("clientPerson").value,
+      clientAddressLine1: document.getElementById("clientAddressLine1").value,
+      clientState: document.getElementById("clientState").value,
+      clientPinCode: document.getElementById("clientPinCode").value,
+      clientCountrySelect: document.getElementById("clientCountrySelect").value,
+      clientEmail: document.getElementById("clientEmail").value,
+      clientGSTIN: document.getElementById("clientGSTIN").value,
+
+      serviceItems: Array.from(document.querySelectorAll(".item")).map(item => ({
+        title: item.querySelector(".title").value,
+        desc: item.querySelector(".desc").value,
+        sac: item.querySelector(".sac").value,
+        amt: item.querySelector(".amt").value
+      })),
+
+      supportEmail: document.getElementById("supportEmail").value,
+      dueDays: document.getElementById("dueDays").value,
+      paymentLink: document.getElementById("paymentLink").value,
+      bankDetailsToggle: document.getElementById("bankDetailsToggle").checked,
+      bankName: document.getElementById("bankName").value,
+      bankHolder: document.getElementById("bankHolder").value,
+      bankNumber: document.getElementById("bankNumber").value,
+      bankIFSC: document.getElementById("bankIFSC").value,
+      bankBranch: document.getElementById("bankBranch").value,
+      qrCodeToggle: document.getElementById("qrCodeToggle").checked,
+      qrImage: document.getElementById("p-qrImage").src,
+
+      signatureName: document.getElementById("signatureName").value,
+      signatureTitle: document.getElementById("signatureTitle").value,
+      signatureImage: document.getElementById("p-signatureImage").src
+    };
+
+    // If editing existing invoice, update it
+    if (currentInvoiceId) {
+      const index = data.invoices.findIndex(inv => inv.id === currentInvoiceId);
+      if (index !== -1) {
+        data.invoices[index] = {
+          ...invoiceData,
+          id: currentInvoiceId,
+          createdAt: data.invoices[index].createdAt,
+          updatedAt: new Date().toISOString()
+        };
+      }
+    } else {
+      // Create new invoice
+      const newInvoice = {
+        ...invoiceData,
+        id: generateInvoiceId(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      data.invoices.push(newInvoice);
+    }
+
+    // Reset current invoice ID
+    data.currentInvoiceId = null;
+    currentInvoiceId = null;
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+
+    // Return to dashboard
+    showDashboard();
+  } catch (e) {
+    console.error("Failed to finish invoice:", e);
+  }
+}
 
 // Update step indicator when navigating
 function updateStepIndicator(step) {
@@ -1961,182 +2309,314 @@ document.getElementById("downloadPdfBtn").addEventListener("click", async functi
 
 /* LOCALSTORAGE PERSISTENCE */
 const STORAGE_KEY = 'invoiceToolData';
+let currentInvoiceId = null; // null = new invoice, "inv_123" = editing existing
 
-// Save all form data to localStorage
-function saveToLocalStorage() {
-  const data = {
-    // Step 1: Your Information
-    companyName: document.getElementById("companyName").value,
-    gstin: document.getElementById("gstin").value,
-    pan: document.getElementById("pan").value,
-    companyAddressLine1: document.getElementById("companyAddressLine1").value,
-    companyCity: document.getElementById("companyCity").value,
-    companyState: document.getElementById("companyState").value,
-    companyCountry: document.getElementById("companyCountry").value,
-    companyPinCode: document.getElementById("companyPinCode").value,
-    companyEmail: document.getElementById("companyEmail").value,
-    companyPhone: document.getElementById("companyPhone").value,
-    companyLogo: document.getElementById("p-companyLogo").src, // Save the base64 image
-
-    // Step 2: Invoice Details
-    invoiceNumber: document.getElementById("invoiceNumber").value,
-    invoiceDate: document.getElementById("invoiceDate").value,
-    lutNumber: document.getElementById("lutNumber").value,
-    invoiceCurrency: document.getElementById("invoiceCurrency").value,
-    exchangeRate: document.getElementById("exchangeRate").value,
-    placeOfSupply: document.getElementById("placeOfSupply").value,
-
-    // Step 3: Client Information
-    clientCompany: document.getElementById("clientCompany").value,
-    clientPerson: document.getElementById("clientPerson").value,
-    clientAddressLine1: document.getElementById("clientAddressLine1").value,
-    clientState: document.getElementById("clientState").value,
-    clientPinCode: document.getElementById("clientPinCode").value,
-    clientCountrySelect: document.getElementById("clientCountrySelect").value,
-    clientEmail: document.getElementById("clientEmail").value,
-    clientGSTIN: document.getElementById("clientGSTIN").value,
-
-    // Step 4: Service Items (dynamic)
-    serviceItems: Array.from(document.querySelectorAll(".item")).map(item => ({
-      title: item.querySelector(".title").value,
-      desc: item.querySelector(".desc").value,
-      sac: item.querySelector(".sac").value,
-      amt: item.querySelector(".amt").value
-    })),
-
-    // Step 5: Payment Terms
-    supportEmail: document.getElementById("supportEmail").value,
-    dueDays: document.getElementById("dueDays").value,
-    paymentLink: document.getElementById("paymentLink").value,
-    bankDetailsToggle: document.getElementById("bankDetailsToggle").checked,
-    bankName: document.getElementById("bankName").value,
-    bankHolder: document.getElementById("bankHolder").value,
-    bankNumber: document.getElementById("bankNumber").value,
-    bankIFSC: document.getElementById("bankIFSC").value,
-    bankBranch: document.getElementById("bankBranch").value,
-    qrCodeToggle: document.getElementById("qrCodeToggle").checked,
-    qrImage: document.getElementById("p-qrImage").src, // Save the base64 image
-
-    // Step 6: Signature
-    signatureName: document.getElementById("signatureName").value,
-    signatureTitle: document.getElementById("signatureTitle").value,
-    signatureImage: document.getElementById("p-signatureImage").src // Save the base64 image
-  };
-
+// Migrate old single-invoice data to new multi-invoice structure
+function migrateToMultiInvoice() {
   try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return; // No data to migrate
+
+    const data = JSON.parse(saved);
+
+    // Check if already migrated (has 'invoices' array)
+    if (data.invoices) return;
+
+    // This is old single-invoice data - migrate it
+    const migratedData = {
+      company: {
+        companyName: data.companyName || "",
+        gstin: data.gstin || "",
+        pan: data.pan || "",
+        companyAddressLine1: data.companyAddressLine1 || "",
+        companyCity: data.companyCity || "",
+        companyState: data.companyState || "",
+        companyCountry: data.companyCountry || "",
+        companyPinCode: data.companyPinCode || "",
+        companyEmail: data.companyEmail || "",
+        companyPhone: data.companyPhone || "",
+        companyLogo: data.companyLogo || ""
+      },
+      invoices: [
+        {
+          id: generateInvoiceId(),
+          invoiceNumber: data.invoiceNumber || "",
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+
+          // Steps 2-6 data
+          invoiceDate: data.invoiceDate || "",
+          lutNumber: data.lutNumber || "",
+          invoiceCurrency: data.invoiceCurrency || "",
+          exchangeRate: data.exchangeRate || "",
+          placeOfSupply: data.placeOfSupply || "",
+
+          clientCompany: data.clientCompany || "",
+          clientPerson: data.clientPerson || "",
+          clientAddressLine1: data.clientAddressLine1 || "",
+          clientState: data.clientState || "",
+          clientPinCode: data.clientPinCode || "",
+          clientCountrySelect: data.clientCountrySelect || "",
+          clientEmail: data.clientEmail || "",
+          clientGSTIN: data.clientGSTIN || "",
+
+          serviceItems: data.serviceItems || [],
+
+          supportEmail: data.supportEmail || "",
+          dueDays: data.dueDays || "",
+          paymentLink: data.paymentLink || "",
+          bankDetailsToggle: data.bankDetailsToggle || false,
+          bankName: data.bankName || "",
+          bankHolder: data.bankHolder || "",
+          bankNumber: data.bankNumber || "",
+          bankIFSC: data.bankIFSC || "",
+          bankBranch: data.bankBranch || "",
+          qrCodeToggle: data.qrCodeToggle || false,
+          qrImage: data.qrImage || "",
+
+          signatureName: data.signatureName || "",
+          signatureTitle: data.signatureTitle || "",
+          signatureImage: data.signatureImage || ""
+        }
+      ],
+      currentInvoiceId: null
+    };
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(migratedData));
+    console.log("Successfully migrated single-invoice data to multi-invoice structure");
+  } catch (e) {
+    console.error("Failed to migrate data:", e);
+  }
+}
+
+// Helper function to generate unique invoice ID
+function generateInvoiceId() {
+  return 'inv_' + Date.now();
+}
+
+// Helper function to calculate invoice total
+function calculateInvoiceTotal(invoice) {
+  if (!invoice.serviceItems) return 0;
+  return invoice.serviceItems.reduce((sum, item) => {
+    return sum + (parseFloat(item.amt) || 0);
+  }, 0);
+}
+
+// Save all form data to localStorage (multi-invoice structure)
+function saveToLocalStorage() {
+  try {
+    // Get existing data or create new structure
+    const saved = localStorage.getItem(STORAGE_KEY);
+    let data = saved ? JSON.parse(saved) : { company: {}, invoices: [], currentInvoiceId: null };
+
+    // Ensure data structure exists
+    if (!data.invoices) data.invoices = [];
+    if (!data.company) data.company = {};
+
+    // Save company data (Step 1)
+    data.company = {
+      companyName: document.getElementById("companyName").value,
+      gstin: document.getElementById("gstin").value,
+      pan: document.getElementById("pan").value,
+      companyAddressLine1: document.getElementById("companyAddressLine1").value,
+      companyCity: document.getElementById("companyCity").value,
+      companyState: document.getElementById("companyState").value,
+      companyCountry: document.getElementById("companyCountry").value,
+      companyPinCode: document.getElementById("companyPinCode").value,
+      companyEmail: document.getElementById("companyEmail").value,
+      companyPhone: document.getElementById("companyPhone").value,
+      companyLogo: document.getElementById("p-companyLogo").src
+    };
+
+    // Create invoice object (Steps 2-6)
+    const invoiceData = {
+      // Step 2: Invoice Details
+      invoiceNumber: document.getElementById("invoiceNumber").value,
+      invoiceDate: document.getElementById("invoiceDate").value,
+      lutNumber: document.getElementById("lutNumber").value,
+      invoiceCurrency: document.getElementById("invoiceCurrency").value,
+      exchangeRate: document.getElementById("exchangeRate").value,
+      placeOfSupply: document.getElementById("placeOfSupply").value,
+
+      // Step 3: Client Information
+      clientCompany: document.getElementById("clientCompany").value,
+      clientPerson: document.getElementById("clientPerson").value,
+      clientAddressLine1: document.getElementById("clientAddressLine1").value,
+      clientState: document.getElementById("clientState").value,
+      clientPinCode: document.getElementById("clientPinCode").value,
+      clientCountrySelect: document.getElementById("clientCountrySelect").value,
+      clientEmail: document.getElementById("clientEmail").value,
+      clientGSTIN: document.getElementById("clientGSTIN").value,
+
+      // Step 4: Service Items (dynamic)
+      serviceItems: Array.from(document.querySelectorAll(".item")).map(item => ({
+        title: item.querySelector(".title").value,
+        desc: item.querySelector(".desc").value,
+        sac: item.querySelector(".sac").value,
+        amt: item.querySelector(".amt").value
+      })),
+
+      // Step 5: Payment Terms
+      supportEmail: document.getElementById("supportEmail").value,
+      dueDays: document.getElementById("dueDays").value,
+      paymentLink: document.getElementById("paymentLink").value,
+      bankDetailsToggle: document.getElementById("bankDetailsToggle").checked,
+      bankName: document.getElementById("bankName").value,
+      bankHolder: document.getElementById("bankHolder").value,
+      bankNumber: document.getElementById("bankNumber").value,
+      bankIFSC: document.getElementById("bankIFSC").value,
+      bankBranch: document.getElementById("bankBranch").value,
+      qrCodeToggle: document.getElementById("qrCodeToggle").checked,
+      qrImage: document.getElementById("p-qrImage").src,
+
+      // Step 6: Signature
+      signatureName: document.getElementById("signatureName").value,
+      signatureTitle: document.getElementById("signatureTitle").value,
+      signatureImage: document.getElementById("p-signatureImage").src
+    };
+
+    // Only save/update invoice if we're editing an existing one
+    // For new invoices, only save company data until user clicks Finish
+    if (currentInvoiceId) {
+      const index = data.invoices.findIndex(inv => inv.id === currentInvoiceId);
+      if (index !== -1) {
+        // Update existing invoice
+        data.invoices[index] = {
+          ...invoiceData,
+          id: currentInvoiceId,
+          createdAt: data.invoices[index].createdAt,
+          updatedAt: new Date().toISOString()
+        };
+      }
+    }
+    // Note: If currentInvoiceId is null, we're creating a new invoice
+    // Don't add it to invoices array yet - wait for user to click Finish
+
+    // Save current invoice ID
+    data.currentInvoiceId = currentInvoiceId;
+
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   } catch (e) {
     console.error("Failed to save to localStorage:", e);
   }
 }
 
-// Restore all form data from localStorage
+// Restore all form data from localStorage (multi-invoice structure)
 function restoreFromLocalStorage() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (!saved) return false; // No saved data exists
 
     const data = JSON.parse(saved);
+    if (!data.company && !data.invoices) return false; // Invalid data structure
 
-    // Step 1: Your Information
-    document.getElementById("companyName").value = data.companyName || "";
-    document.getElementById("gstin").value = data.gstin || "";
-    document.getElementById("pan").value = data.pan || "";
-    document.getElementById("companyAddressLine1").value = data.companyAddressLine1 || "";
-    document.getElementById("companyCity").value = data.companyCity || "";
-    document.getElementById("companyState").value = data.companyState || "";
-    document.getElementById("companyCountry").value = data.companyCountry || "";
-    document.getElementById("companyPinCode").value = data.companyPinCode || "";
-    document.getElementById("companyEmail").value = data.companyEmail || "";
-    document.getElementById("companyPhone").value = data.companyPhone || "";
+    // Always restore company data (Step 1)
+    if (data.company) {
+      document.getElementById("companyName").value = data.company.companyName || "";
+      document.getElementById("gstin").value = data.company.gstin || "";
+      document.getElementById("pan").value = data.company.pan || "";
+      document.getElementById("companyAddressLine1").value = data.company.companyAddressLine1 || "";
+      document.getElementById("companyCity").value = data.company.companyCity || "";
+      document.getElementById("companyState").value = data.company.companyState || "";
+      document.getElementById("companyCountry").value = data.company.companyCountry || "";
+      document.getElementById("companyPinCode").value = data.company.companyPinCode || "";
+      document.getElementById("companyEmail").value = data.company.companyEmail || "";
+      document.getElementById("companyPhone").value = data.company.companyPhone || "";
 
-    // Restore company logo
-    if (data.companyLogo && data.companyLogo !== "" && !data.companyLogo.endsWith("/")) {
-      document.getElementById("p-companyLogo").src = data.companyLogo;
-      document.getElementById("p-companyLogo").style.display = "block";
+      // Restore company logo
+      if (data.company.companyLogo && data.company.companyLogo !== "" && !data.company.companyLogo.endsWith("/")) {
+        document.getElementById("p-companyLogo").src = data.company.companyLogo;
+        document.getElementById("p-companyLogo").style.display = "block";
+      }
     }
 
-    // Step 2: Invoice Details
-    document.getElementById("invoiceNumber").value = data.invoiceNumber || "";
-    document.getElementById("invoiceDate").value = data.invoiceDate || "";
-    document.getElementById("lutNumber").value = data.lutNumber || "";
-    document.getElementById("invoiceCurrency").value = data.invoiceCurrency || "USD";
-    document.getElementById("exchangeRate").value = data.exchangeRate || "";
-    document.getElementById("placeOfSupply").value = data.placeOfSupply || "Karnataka";
+    // If editing an invoice, restore invoice data (Steps 2-6)
+    if (currentInvoiceId && data.invoices) {
+      const invoice = data.invoices.find(inv => inv.id === currentInvoiceId);
+      if (invoice) {
+        // Step 2: Invoice Details
+        document.getElementById("invoiceNumber").value = invoice.invoiceNumber || "";
+        document.getElementById("invoiceDate").value = invoice.invoiceDate || "";
+        document.getElementById("lutNumber").value = invoice.lutNumber || "";
+        document.getElementById("invoiceCurrency").value = invoice.invoiceCurrency || "USD";
+        document.getElementById("exchangeRate").value = invoice.exchangeRate || "";
+        document.getElementById("placeOfSupply").value = invoice.placeOfSupply || "Karnataka";
 
-    // Step 3: Client Information
-    document.getElementById("clientCompany").value = data.clientCompany || "";
-    document.getElementById("clientPerson").value = data.clientPerson || "";
-    document.getElementById("clientAddressLine1").value = data.clientAddressLine1 || "";
-    document.getElementById("clientState").value = data.clientState || "";
-    document.getElementById("clientPinCode").value = data.clientPinCode || "";
-    document.getElementById("clientCountrySelect").value = data.clientCountrySelect || "United States of America";
-    document.getElementById("clientEmail").value = data.clientEmail || "";
-    document.getElementById("clientGSTIN").value = data.clientGSTIN || "";
+        // Step 3: Client Information
+        document.getElementById("clientCompany").value = invoice.clientCompany || "";
+        document.getElementById("clientPerson").value = invoice.clientPerson || "";
+        document.getElementById("clientAddressLine1").value = invoice.clientAddressLine1 || "";
+        document.getElementById("clientState").value = invoice.clientState || "";
+        document.getElementById("clientPinCode").value = invoice.clientPinCode || "";
+        document.getElementById("clientCountrySelect").value = invoice.clientCountrySelect || "United States of America";
+        document.getElementById("clientEmail").value = invoice.clientEmail || "";
+        document.getElementById("clientGSTIN").value = invoice.clientGSTIN || "";
 
-    // Step 4: Service Items (dynamic restoration)
-    if (data.serviceItems && data.serviceItems.length > 0) {
-      // Clear existing items first
-      document.querySelectorAll(".item").forEach(item => item.remove());
+        // Step 4: Service Items (dynamic restoration)
+        if (invoice.serviceItems && invoice.serviceItems.length > 0) {
+          // Clear existing items first
+          document.querySelectorAll(".item").forEach(item => item.remove());
 
-      // Add each saved item
-      data.serviceItems.forEach(itemData => {
-        document.getElementById("addItemBtn").click();
+          // Add each saved item
+          invoice.serviceItems.forEach(itemData => {
+            document.getElementById("addItemBtn").click();
 
-        // Wait for DOM update, then populate the last added item
-        setTimeout(() => {
-          const items = document.querySelectorAll(".item");
-          const lastItem = items[items.length - 1];
-          if (lastItem) {
-            lastItem.querySelector(".title").value = itemData.title || "";
-            lastItem.querySelector(".desc").value = itemData.desc || "";
-            lastItem.querySelector(".sac").value = itemData.sac || "";
-            lastItem.querySelector(".amt").value = itemData.amt || "";
+            // Wait for DOM update, then populate the last added item
+            setTimeout(() => {
+              const items = document.querySelectorAll(".item");
+              const lastItem = items[items.length - 1];
+              if (lastItem) {
+                lastItem.querySelector(".title").value = itemData.title || "";
+                lastItem.querySelector(".desc").value = itemData.desc || "";
+                lastItem.querySelector(".sac").value = itemData.sac || "";
+                lastItem.querySelector(".amt").value = itemData.amt || "";
 
-            // Trigger input events to update preview
-            lastItem.querySelector(".title").dispatchEvent(new Event("input"));
-            lastItem.querySelector(".desc").dispatchEvent(new Event("input"));
-            lastItem.querySelector(".sac").dispatchEvent(new Event("input"));
-            lastItem.querySelector(".amt").dispatchEvent(new Event("input"));
-          }
-        }, 10);
-      });
-    }
+                // Trigger input events to update preview
+                lastItem.querySelector(".title").dispatchEvent(new Event("input"));
+                lastItem.querySelector(".desc").dispatchEvent(new Event("input"));
+                lastItem.querySelector(".sac").dispatchEvent(new Event("input"));
+                lastItem.querySelector(".amt").dispatchEvent(new Event("input"));
+              }
+            }, 10);
+          });
+        }
 
-    // Step 5: Payment Terms
-    document.getElementById("supportEmail").value = data.supportEmail || "";
-    document.getElementById("dueDays").value = data.dueDays || "";
-    document.getElementById("paymentLink").value = data.paymentLink || "";
+        // Step 5: Payment Terms
+        document.getElementById("supportEmail").value = invoice.supportEmail || "";
+        document.getElementById("dueDays").value = invoice.dueDays || "";
+        document.getElementById("paymentLink").value = invoice.paymentLink || "";
 
-    // Restore bank details toggle
-    document.getElementById("bankDetailsToggle").checked = data.bankDetailsToggle || false;
-    document.getElementById("bankDetailsToggle").dispatchEvent(new Event("change"));
+        // Restore bank details toggle
+        document.getElementById("bankDetailsToggle").checked = invoice.bankDetailsToggle || false;
+        document.getElementById("bankDetailsToggle").dispatchEvent(new Event("change"));
 
-    document.getElementById("bankName").value = data.bankName || "";
-    document.getElementById("bankHolder").value = data.bankHolder || "";
-    document.getElementById("bankNumber").value = data.bankNumber || "";
-    document.getElementById("bankIFSC").value = data.bankIFSC || "";
-    document.getElementById("bankBranch").value = data.bankBranch || "";
+        document.getElementById("bankName").value = invoice.bankName || "";
+        document.getElementById("bankHolder").value = invoice.bankHolder || "";
+        document.getElementById("bankNumber").value = invoice.bankNumber || "";
+        document.getElementById("bankIFSC").value = invoice.bankIFSC || "";
+        document.getElementById("bankBranch").value = invoice.bankBranch || "";
 
-    // Restore QR toggle
-    document.getElementById("qrCodeToggle").checked = data.qrCodeToggle || false;
-    document.getElementById("qrCodeToggle").dispatchEvent(new Event("change"));
+        // Restore QR toggle
+        document.getElementById("qrCodeToggle").checked = invoice.qrCodeToggle || false;
+        document.getElementById("qrCodeToggle").dispatchEvent(new Event("change"));
 
-    // Restore QR image
-    if (data.qrImage && data.qrImage !== "" && !data.qrImage.endsWith("/")) {
-      document.getElementById("p-qrImage").src = data.qrImage;
-      document.getElementById("p-qrImage").style.display = "block";
-      document.querySelector(".wise-bank-code").style.display = "block";
-    }
+        // Restore QR image
+        if (invoice.qrImage && invoice.qrImage !== "" && !invoice.qrImage.endsWith("/")) {
+          document.getElementById("p-qrImage").src = invoice.qrImage;
+          document.getElementById("p-qrImage").style.display = "block";
+          document.querySelector(".wise-bank-code").style.display = "block";
+        }
 
-    // Step 6: Signature
-    document.getElementById("signatureName").value = data.signatureName || "";
-    document.getElementById("signatureTitle").value = data.signatureTitle || "";
+        // Step 6: Signature
+        document.getElementById("signatureName").value = invoice.signatureName || "";
+        document.getElementById("signatureTitle").value = invoice.signatureTitle || "";
 
-    // Restore signature image
-    if (data.signatureImage && data.signatureImage !== "" && !data.signatureImage.endsWith("/")) {
-      document.getElementById("p-signatureImage").src = data.signatureImage;
-      document.getElementById("p-signatureImage").style.display = "block";
+        // Restore signature image
+        if (invoice.signatureImage && invoice.signatureImage !== "" && !invoice.signatureImage.endsWith("/")) {
+          document.getElementById("p-signatureImage").src = invoice.signatureImage;
+          document.getElementById("p-signatureImage").style.display = "block";
+        }
+      }
     }
 
     // Trigger all input events to update previews
@@ -2184,6 +2664,325 @@ function clearLocalStorage() {
   localStorage.removeItem(STORAGE_KEY);
 }
 
+// Get all invoices sorted by date (newest first)
+function getAllInvoices() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return [];
+
+    const data = JSON.parse(saved);
+    if (!data.invoices) return [];
+
+    // Sort by createdAt date, newest first
+    return data.invoices.sort((a, b) => {
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    });
+  } catch (e) {
+    console.error("Failed to get invoices:", e);
+    return [];
+  }
+}
+
+// Delete an invoice by ID
+function deleteInvoice(id) {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return;
+
+    const data = JSON.parse(saved);
+    if (!data.invoices) return;
+
+    // Filter out the invoice with matching ID
+    data.invoices = data.invoices.filter(inv => inv.id !== id);
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch (e) {
+    console.error("Failed to delete invoice:", e);
+  }
+}
+
+// Clear all preview elements (used when creating new invoice)
+function clearPreview() {
+  console.log('clearPreview() called');
+  try {
+    // Company preview
+    const pCompanyName = document.getElementById("p-companyName");
+    if (pCompanyName) pCompanyName.textContent = "";
+
+    const pGstin = document.getElementById("p-gstin");
+    if (pGstin) pGstin.textContent = "";
+
+    const pPan = document.getElementById("p-pan");
+    if (pPan) pPan.textContent = "";
+
+    const pCompanyAddress = document.getElementById("p-companyAddress");
+    if (pCompanyAddress) pCompanyAddress.innerHTML = "";
+
+    const pCompanyEmail = document.getElementById("p-companyEmail");
+    if (pCompanyEmail) pCompanyEmail.textContent = "";
+
+    const pCompanyPhone = document.getElementById("p-companyPhone");
+    if (pCompanyPhone) pCompanyPhone.textContent = "";
+
+    const companyLogo = document.getElementById("p-companyLogo");
+    if (companyLogo) {
+      companyLogo.src = "";
+      companyLogo.style.display = "none";
+    }
+
+  // Invoice details
+  document.getElementById("p-invoiceNumber").textContent = "";
+  const invoiceDate = document.getElementById("p-invoiceDate");
+  if (invoiceDate) invoiceDate.textContent = "";
+  const lut = document.getElementById("p-lut");
+  if (lut) lut.textContent = "";
+  document.getElementById("p-currency").textContent = "";
+  const place = document.getElementById("p-place");
+  if (place) place.textContent = "";
+
+  // Client preview
+  document.getElementById("p-clientCompany").textContent = "";
+  const clientPerson = document.getElementById("p-clientPerson");
+  if (clientPerson) clientPerson.textContent = "";
+  document.getElementById("p-clientAddress").innerHTML = "";
+  const clientEmail = document.getElementById("p-clientEmail");
+  if (clientEmail) clientEmail.textContent = "";
+  const clientGSTIN = document.getElementById("p-clientGSTIN");
+  if (clientGSTIN) clientGSTIN.textContent = "";
+  document.getElementById("p-clientCountry").textContent = "";
+
+  // Items table - clear all rows
+  const itemsTableBody = document.querySelector(".table-body");
+  if (itemsTableBody) itemsTableBody.innerHTML = "";
+
+  // Totals
+  const subtotal = document.getElementById("p-subtotal");
+  if (subtotal) subtotal.textContent = "0.00";
+  const igst = document.getElementById("p-igst");
+  if (igst) igst.textContent = "0.00";
+  const total = document.getElementById("p-total");
+  if (total) total.textContent = "0.00";
+
+  // Payment
+  const paymentText = document.getElementById("p-paymentText");
+  if (paymentText) paymentText.textContent = "";
+  const payBtnBlock = document.getElementById("payBtnBlock");
+  if (payBtnBlock) payBtnBlock.style.display = "none";
+
+  // Bank details
+  const bankDetailsBlock = document.getElementById("bankDetailsBlock");
+  if (bankDetailsBlock) bankDetailsBlock.style.display = "none";
+
+  // Signature
+  const signatureName = document.getElementById("p-signatureName");
+  if (signatureName) signatureName.textContent = "";
+  const signatureTitle = document.getElementById("p-signatureTitle");
+  if (signatureTitle) signatureTitle.textContent = "";
+  const signatureImage = document.getElementById("p-signatureImage");
+  if (signatureImage) {
+    signatureImage.src = "";
+    signatureImage.style.display = "none";
+  }
+
+  // QR code
+  const qrImage = document.getElementById("p-qrImage");
+  if (qrImage) {
+    qrImage.src = "";
+    qrImage.style.display = "none";
+  }
+  const qrContainer = document.querySelector(".wise-bank-code");
+  if (qrContainer) qrContainer.style.display = "none";
+
+    console.log('clearPreview() completed successfully');
+  } catch (error) {
+    console.error('Error in clearPreview():', error);
+  }
+}
+
+// Set which invoice is being edited (null for new invoice)
+function setCurrentInvoice(id) {
+  currentInvoiceId = id;
+
+  // Also update in localStorage
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const data = JSON.parse(saved);
+      data.currentInvoiceId = id;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+  } catch (e) {
+    console.error("Failed to set current invoice:", e);
+  }
+}
+
+// Clear invoice form for NEW invoice with smart data reuse
+function clearInvoiceForm() {
+  console.log('clearInvoiceForm() called');
+  try {
+    // Show sample data in preview (form stays empty)
+    try {
+      loadSampleDataToPreview();
+      console.log('Sample data loaded to preview');
+    } catch (previewError) {
+      console.error('Failed to load preview, continuing anyway:', previewError);
+      // Continue execution even if preview fails
+    }
+
+  // Check if user has created any real invoices (not the sample)
+  const saved = localStorage.getItem(STORAGE_KEY);
+  let shouldRestoreUserData = false;
+  let userData = null;
+
+  if (saved) {
+    const data = JSON.parse(saved);
+    // Get user-created invoices (exclude sample invoice)
+    const userInvoices = data.invoices ? data.invoices.filter(inv => inv.id !== 'sample_invoice_001') : [];
+
+    if (userInvoices.length > 0) {
+      shouldRestoreUserData = true;
+      // Get most recent user invoice for reference data
+      const latestUserInvoice = userInvoices[0];
+      userData = {
+        company: data.company,
+        payment: {
+          supportEmail: latestUserInvoice.supportEmail,
+          dueDays: latestUserInvoice.dueDays,
+          paymentLink: latestUserInvoice.paymentLink,
+          bankDetailsToggle: latestUserInvoice.bankDetailsToggle,
+          bankName: latestUserInvoice.bankName,
+          bankHolder: latestUserInvoice.bankHolder,
+          bankNumber: latestUserInvoice.bankNumber,
+          bankIFSC: latestUserInvoice.bankIFSC,
+          bankBranch: latestUserInvoice.bankBranch,
+          qrCodeToggle: latestUserInvoice.qrCodeToggle,
+          qrImage: latestUserInvoice.qrImage
+        },
+        signature: {
+          signatureName: latestUserInvoice.signatureName,
+          signatureTitle: latestUserInvoice.signatureTitle,
+          signatureImage: latestUserInvoice.signatureImage
+        }
+      };
+    }
+  }
+
+  // Step 1: Company info - restore if user has created invoices before
+  if (shouldRestoreUserData && userData.company) {
+    document.getElementById("companyName").value = userData.company.companyName || "";
+    document.getElementById("gstin").value = userData.company.gstin || "";
+    document.getElementById("pan").value = userData.company.pan || "";
+    document.getElementById("companyAddressLine1").value = userData.company.companyAddressLine1 || "";
+    document.getElementById("companyCity").value = userData.company.companyCity || "";
+    document.getElementById("companyState").value = userData.company.companyState || "";
+    document.getElementById("companyCountry").value = userData.company.companyCountry || "";
+    document.getElementById("companyPinCode").value = userData.company.companyPinCode || "";
+    document.getElementById("companyEmail").value = userData.company.companyEmail || "";
+    document.getElementById("companyPhone").value = userData.company.companyPhone || "";
+    if (userData.company.companyLogo) {
+      document.getElementById("p-companyLogo").src = userData.company.companyLogo;
+      document.getElementById("p-companyLogo").style.display = "block";
+    }
+  } else {
+    // Clear company info for first-time users
+    document.getElementById("companyName").value = "";
+    document.getElementById("gstin").value = "";
+    document.getElementById("pan").value = "";
+    document.getElementById("companyAddressLine1").value = "";
+    document.getElementById("companyCity").value = "";
+    document.getElementById("companyState").value = "";
+    document.getElementById("companyCountry").value = "";
+    document.getElementById("companyPinCode").value = "";
+    document.getElementById("companyEmail").value = "";
+    document.getElementById("companyPhone").value = "";
+    document.getElementById("p-companyLogo").src = "";
+    document.getElementById("p-companyLogo").style.display = "none";
+  }
+
+  // Step 2: Clear invoice-specific details (always)
+  document.getElementById("invoiceNumber").value = "";
+  document.getElementById("invoiceDate").value = "";
+  document.getElementById("lutNumber").value = "";
+  document.getElementById("invoiceCurrency").value = "USD";
+  document.getElementById("exchangeRate").value = "";
+  document.getElementById("placeOfSupply").value = "Karnataka";
+
+  // Step 3: Clear client information (always)
+  document.getElementById("clientCompany").value = "";
+  document.getElementById("clientPerson").value = "";
+  document.getElementById("clientAddressLine1").value = "";
+  document.getElementById("clientState").value = "";
+  document.getElementById("clientPinCode").value = "";
+  document.getElementById("clientCountrySelect").value = "United States of America";
+  document.getElementById("clientEmail").value = "";
+  document.getElementById("clientGSTIN").value = "";
+
+  // Step 4: Clear service items (always - keep one empty item)
+  document.querySelectorAll(".item").forEach(item => item.remove());
+  document.getElementById("addItemBtn").click();
+
+  // Step 5: Payment - restore if user has created invoices before
+  if (shouldRestoreUserData && userData.payment) {
+    document.getElementById("supportEmail").value = userData.payment.supportEmail || "";
+    document.getElementById("dueDays").value = userData.payment.dueDays || "";
+    document.getElementById("paymentLink").value = userData.payment.paymentLink || "";
+    document.getElementById("bankDetailsToggle").checked = userData.payment.bankDetailsToggle || false;
+    document.getElementById("bankDetailsToggle").dispatchEvent(new Event("change"));
+    document.getElementById("bankName").value = userData.payment.bankName || "";
+    document.getElementById("bankHolder").value = userData.payment.bankHolder || "";
+    document.getElementById("bankNumber").value = userData.payment.bankNumber || "";
+    document.getElementById("bankIFSC").value = userData.payment.bankIFSC || "";
+    document.getElementById("bankBranch").value = userData.payment.bankBranch || "";
+    document.getElementById("qrCodeToggle").checked = userData.payment.qrCodeToggle || false;
+    document.getElementById("qrCodeToggle").dispatchEvent(new Event("change"));
+    if (userData.payment.qrImage) {
+      document.getElementById("p-qrImage").src = userData.payment.qrImage;
+      document.getElementById("p-qrImage").style.display = "block";
+    }
+  } else {
+    // Clear payment info for first-time users
+    document.getElementById("supportEmail").value = "";
+    document.getElementById("dueDays").value = "";
+    document.getElementById("paymentLink").value = "";
+    document.getElementById("bankDetailsToggle").checked = false;
+    document.getElementById("bankDetailsToggle").dispatchEvent(new Event("change"));
+    document.getElementById("bankName").value = "";
+    document.getElementById("bankHolder").value = "";
+    document.getElementById("bankNumber").value = "";
+    document.getElementById("bankIFSC").value = "";
+    document.getElementById("bankBranch").value = "";
+    document.getElementById("qrCodeToggle").checked = false;
+    document.getElementById("qrCodeToggle").dispatchEvent(new Event("change"));
+    document.getElementById("p-qrImage").src = "";
+    document.getElementById("p-qrImage").style.display = "none";
+    const wiseCode = document.querySelector(".wise-bank-code");
+    if (wiseCode) wiseCode.style.display = "none";
+  }
+
+  // Step 6: Signature - restore if user has created invoices before
+  if (shouldRestoreUserData && userData.signature) {
+    document.getElementById("signatureName").value = userData.signature.signatureName || "";
+    document.getElementById("signatureTitle").value = userData.signature.signatureTitle || "";
+    if (userData.signature.signatureImage) {
+      document.getElementById("p-signatureImage").src = userData.signature.signatureImage;
+      document.getElementById("p-signatureImage").style.display = "block";
+    }
+  } else {
+    // Clear signature for first-time users
+    document.getElementById("signatureName").value = "";
+    document.getElementById("signatureTitle").value = "";
+    document.getElementById("p-signatureImage").src = "";
+    document.getElementById("p-signatureImage").style.display = "none";
+  }
+
+  // DO NOT trigger preview updates - preview should stay empty until user types
+    console.log('clearInvoiceForm() completed successfully');
+  } catch (error) {
+    console.error('Error in clearInvoiceForm():', error);
+    // Don't re-throw - allow flow to continue
+  }
+}
+
 // Debounced auto-save function (saves 500ms after user stops typing)
 let saveTimeout;
 function autoSave() {
@@ -2220,7 +3019,273 @@ function setupAutoSave() {
   document.getElementById('qrImage').addEventListener('change', () => setTimeout(autoSave, 100));
 }
 
+/* VIEW NAVIGATION */
+// Show dashboard view, hide invoice form
+function showDashboard() {
+  document.querySelector('.container').style.display = 'none';
+  document.querySelector('.dashboard-view').style.display = 'block';
+  document.getElementById('backToDashboardBtn').style.display = 'none';
+  renderInvoicesList();
+}
+
+// Show invoice form, hide dashboard
+function showInvoiceForm() {
+  document.querySelector('.container').style.display = 'grid';
+  document.querySelector('.dashboard-view').style.display = 'none';
+  document.getElementById('backToDashboardBtn').style.display = 'block';
+  showStep(1); // Start at Step 1
+}
+
+// Render list of all invoices in dashboard (spreadsheet-style)
+function renderInvoicesList() {
+  const invoices = getAllInvoices();
+  const listContainer = document.querySelector('.invoices-list');
+
+  if (invoices.length === 0) {
+    // Show empty state
+    listContainer.innerHTML = `
+      <div class="empty-state">
+        <h2>No Invoices Yet</h2>
+        <p>Click "Create New Invoice" to get started</p>
+      </div>
+    `;
+    return;
+  }
+
+  // Generate spreadsheet-style table
+  const header = `
+    <div class="invoice-table-header">
+      <div>Invoice Number</div>
+      <div>Date</div>
+      <div>Client</div>
+      <div>Contact</div>
+      <div>Amount</div>
+      <div>Actions</div>
+    </div>
+  `;
+
+  const rows = invoices.map(invoice => {
+    const total = calculateInvoiceTotal(invoice);
+    const currency = invoice.invoiceCurrency || 'USD';
+    const date = invoice.invoiceDate || new Date(invoice.createdAt).toLocaleDateString();
+
+    // All invoices show same action buttons (sample is now editable)
+    const actionButtons = `
+      <button class="btn-action btn-edit" data-invoice-id="${invoice.id}">Edit</button>
+      <button class="btn-action btn-download" data-invoice-id="${invoice.id}">Download</button>
+      <button class="btn-action btn-delete" data-invoice-id="${invoice.id}">Delete</button>
+    `;
+
+    return `
+      <div class="invoice-row" data-invoice-id="${invoice.id}">
+        <div class="invoice-cell invoice-cell-number">${invoice.invoiceNumber || 'Draft'}</div>
+        <div class="invoice-cell invoice-cell-date">${date}</div>
+        <div class="invoice-cell invoice-cell-client">${invoice.clientCompany || 'No client'}</div>
+        <div class="invoice-cell invoice-cell-person">${invoice.clientPerson || '-'}</div>
+        <div class="invoice-cell invoice-cell-amount">${currency} ${total.toFixed(2)}</div>
+        <div class="invoice-cell invoice-cell-actions">
+          ${actionButtons}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  listContainer.innerHTML = header + rows;
+}
+
+// Setup dashboard event listeners
+function setupDashboardListeners() {
+  // Create New Invoice button
+  const createBtn = document.getElementById('createNewInvoiceBtn');
+  console.log('Setting up Create New Invoice button...', createBtn); // Debug
+  if (createBtn) {
+    // Remove any existing listeners by cloning
+    const newBtn = createBtn.cloneNode(true);
+    createBtn.parentNode.replaceChild(newBtn, createBtn);
+
+    newBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('Create New Invoice clicked!'); // Debug
+      try {
+        setCurrentInvoice(null); // New invoice mode
+        clearInvoiceForm(); // Prepares form with company/payment info, clears invoice data
+        showInvoiceForm(); // Show the form
+      } catch (error) {
+        console.error('Error in Create New Invoice:', error);
+      }
+    });
+    console.log('Create New Invoice button listener attached successfully');
+  } else {
+    console.error('Create New Invoice button not found!');
+  }
+
+  // Event delegation for dynamically created Edit/Delete/Download buttons
+  const listContainer = document.querySelector('.invoices-list');
+  if (listContainer) {
+    listContainer.addEventListener('click', async (e) => {
+      const button = e.target;
+      if (!button.matches('.btn-action')) return;
+
+      const invoiceId = button.dataset.invoiceId;
+      if (!invoiceId) return;
+
+      if (button.matches('.btn-edit')) {
+        setCurrentInvoice(invoiceId);
+        restoreFromLocalStorage(); // Load invoice data
+        showInvoiceForm();
+      }
+
+      if (button.matches('.btn-delete')) {
+        if (confirm('Are you sure you want to delete this invoice?')) {
+          deleteInvoice(invoiceId);
+          renderInvoicesList();
+        }
+      }
+
+      if (button.matches('.btn-download')) {
+        // Load invoice data temporarily, generate PDF, restore current state
+        const tempId = currentInvoiceId;
+        setCurrentInvoice(invoiceId);
+        restoreFromLocalStorage();
+
+        // Wait for data to load, then trigger PDF download
+        setTimeout(() => {
+          document.getElementById('downloadPdfBtn').click();
+
+          // Restore previous state after download
+          setTimeout(() => {
+            setCurrentInvoice(tempId);
+            if (tempId) {
+              restoreFromLocalStorage();
+            }
+          }, 1000);
+        }, 200);
+      }
+    });
+  }
+}
+
 /* LOAD SAMPLE DATA */
+// Load sample data directly into preview (without filling form fields)
+function loadSampleDataToPreview() {
+  // Directly set preview elements with sample data (with null checks)
+  const pCompanyName = document.getElementById("p-companyName");
+  if (pCompanyName) pCompanyName.textContent = "Google India Pvt Ltd";
+
+  const pGstin = document.getElementById("p-gstin");
+  if (pGstin) pGstin.textContent = "29AABCG5293F1Z5";
+
+  const pPan = document.getElementById("p-pan");
+  if (pPan) pPan.textContent = "AABCG5293F";
+
+  const pCompanyAddress = document.getElementById("p-companyAddress");
+  if (pCompanyAddress) pCompanyAddress.textContent = "3, Old Madras Rd, Sadanandanagar, Bennigana Halli,";
+
+  const pCompanyCity = document.getElementById("p-companyCity");
+  if (pCompanyCity) pCompanyCity.textContent = "Bangalore";
+
+  const pCompanyState = document.getElementById("p-companyState");
+  if (pCompanyState) pCompanyState.textContent = "Karnataka";
+
+  const pCompanyCountry = document.getElementById("p-companyCountry");
+  if (pCompanyCountry) pCompanyCountry.textContent = "India";
+
+  const pCompanyPinCode = document.getElementById("p-companyPinCode");
+  if (pCompanyPinCode) pCompanyPinCode.textContent = "560001";
+
+  const pCompanyEmail = document.getElementById("p-companyEmail");
+  if (pCompanyEmail) pCompanyEmail.textContent = "invoices@google.com";
+
+  const pCompanyPhone = document.getElementById("p-companyPhone");
+  if (pCompanyPhone) pCompanyPhone.textContent = "(+91) 80 6744 5000";
+
+  const pInvoiceNumber = document.getElementById("p-invoiceNumber");
+  if (pInvoiceNumber) pInvoiceNumber.textContent = "GOOG-2025-DEC-001";
+
+  const pInvoiceDate = document.getElementById("p-invoiceDate");
+  if (pInvoiceDate) pInvoiceDate.textContent = "2025-12-13";
+
+  const pLutNumber = document.getElementById("p-lutNumber");
+  if (pLutNumber) pLutNumber.textContent = "AD2302220102614";
+
+  const pPlaceOfSupply = document.getElementById("p-placeOfSupply");
+  if (pPlaceOfSupply) pPlaceOfSupply.textContent = "Karnataka";
+
+  const pClientCompany = document.getElementById("p-clientCompany");
+  if (pClientCompany) pClientCompany.textContent = "Microsoft Corporation";
+
+  const pClientPerson = document.getElementById("p-clientPerson");
+  if (pClientPerson) pClientPerson.textContent = "John Smith";
+
+  const pClientAddress = document.getElementById("p-clientAddress");
+  if (pClientAddress) pClientAddress.textContent = "One Microsoft Way";
+
+  const pClientState = document.getElementById("p-clientState");
+  if (pClientState) pClientState.textContent = "WA";
+
+  const pClientCountry = document.getElementById("p-clientCountry");
+  if (pClientCountry) pClientCountry.textContent = "United States of America";
+
+  const pClientPinCode = document.getElementById("p-clientPinCode");
+  if (pClientPinCode) pClientPinCode.textContent = "98052";
+
+  const pClientEmail = document.getElementById("p-clientEmail");
+  if (pClientEmail) pClientEmail.textContent = "john.smith@microsoft.com";
+
+  const pClientGSTIN = document.getElementById("p-clientGSTIN");
+  if (pClientGSTIN) pClientGSTIN.textContent = "Unregistered / Overseas";
+
+  // Sample service item
+  const itemsContainer = document.getElementById("items-preview");
+  if (itemsContainer) {
+    itemsContainer.innerHTML = `
+      <div class="item-row">
+        <div class="item-content">
+          <div class="item-title">Webflow Website Development</div>
+          <div class="item-desc">Custom redesign using selected template, including migration of existing site and setup of 7 pages (Home, About, Contact, Team, Case Study CMS, Podcast CMS, Blog CMS). Includes 2 revision rounds.</div>
+          <div class="item-sac">SAC: 998314</div>
+        </div>
+        <div class="item-cost">
+          <div class="cost">USD 1,050.00</div>
+        </div>
+      </div>
+      <div class="total-row">
+        <div class="total-label"><strong>TOTAL AMOUNT</strong></div>
+        <div class="total-amount"><strong>USD 1,050.00</strong></div>
+      </div>
+    `;
+  }
+
+  const pSupportEmail = document.getElementById("p-supportEmail");
+  if (pSupportEmail) pSupportEmail.textContent = "invoices@google.com";
+
+  const pDueDays = document.getElementById("p-dueDays");
+  if (pDueDays) pDueDays.textContent = "30";
+
+  const pPaymentLink = document.getElementById("p-paymentLink");
+  if (pPaymentLink) pPaymentLink.textContent = "https://www.paypal.me/PalashRajput";
+
+  // Show bank details in preview
+  const bankDetails = document.querySelector(".bank-details");
+  if (bankDetails) {
+    bankDetails.style.display = "block";
+    bankDetails.innerHTML = `
+      <div class="bank"><div class="text-block semi"><strong>HDFC BANK</strong></div></div>
+      <div class="bank"><div class="text-block semi"><strong>GOOGLE INDIA PVT LTD</strong></div></div>
+      <div class="bank"><div class="text-block semi"><strong>00123456789012</strong></div></div>
+      <div class="bank"><div class="text-block semi"><strong>HDFC0000123</strong></div></div>
+      <div class="bank"><div class="text-block semi"><strong>KORAMANGALA, BANGALORE</strong></div></div>
+    `;
+  }
+
+  const pSignatureName = document.getElementById("p-signatureName");
+  if (pSignatureName) pSignatureName.textContent = "Sundar Pichai";
+
+  const pSignatureTitle = document.getElementById("p-signatureTitle");
+  if (pSignatureTitle) pSignatureTitle.textContent = "Authorized Signatory";
+}
+
+// Original loadSampleData (for backwards compatibility if needed)
 function loadSampleData() {
   // Step 1: Your Information
   document.getElementById("companyName").value = "Google India Pvt Ltd";
@@ -2314,18 +3379,108 @@ function loadSampleData() {
   updateBankDetails();
 }
 
+// Create default sample invoice (only runs once on first load)
+function createSampleInvoice() {
+  const sampleInvoice = {
+    id: 'sample_invoice_001',
+    invoiceNumber: 'SAMPLE-2025-001',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+
+    // Invoice details
+    invoiceDate: '2025-12-01',
+    lutNumber: 'AD2302220102614',
+    invoiceCurrency: 'USD',
+    exchangeRate: '90.37',
+    placeOfSupply: 'Karnataka',
+
+    // Client
+    clientCompany: 'Microsoft Corporation',
+    clientPerson: 'John Smith',
+    clientAddressLine1: 'One Microsoft Way',
+    clientState: 'WA',
+    clientPinCode: '98052',
+    clientCountrySelect: 'United States of America',
+    clientEmail: 'john.smith@microsoft.com',
+    clientGSTIN: 'Unregistered / Overseas',
+
+    // Services (total $5000)
+    serviceItems: [
+      {
+        title: 'Cloud Infrastructure Consulting',
+        desc: 'Strategic consulting for cloud migration including architecture design, cost optimization, security best practices, and implementation support. Comprehensive service package including 40 hours of expert consultation, documentation, and ongoing support.',
+        sac: '998313',
+        amt: '5000'
+      }
+    ],
+
+    // Payment terms
+    supportEmail: 'billing@example.com',
+    dueDays: '30',
+    paymentLink: 'https://www.paypal.me/example',
+    bankDetailsToggle: true,
+    bankName: 'HDFC BANK',
+    bankHolder: 'EXAMPLE COMPANY PVT LTD',
+    bankNumber: '00123456789012',
+    bankIFSC: 'HDFC0000123',
+    bankBranch: 'KORAMANGALA, BANGALORE',
+    qrCodeToggle: false,
+    qrImage: '',
+
+    // Signature
+    signatureName: 'Sample Authorized Signatory',
+    signatureTitle: 'Director'
+  };
+
+  const data = {
+    company: {
+      companyName: 'Sample Company Pvt Ltd',
+      gstin: '29AABCS1234E1Z5',
+      pan: 'AABCS1234E',
+      companyAddressLine1: '123 Sample Street, Tech Park',
+      companyCity: 'Bangalore',
+      companyState: 'Karnataka',
+      companyCountry: 'India',
+      companyPinCode: '560001',
+      companyEmail: 'contact@samplecompany.com',
+      companyPhone: '(+91) 80 1234 5678',
+      companyLogo: ''
+    },
+    invoices: [sampleInvoice],
+    currentInvoiceId: null
+  };
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
 // Initialize app on page load
 window.addEventListener("DOMContentLoaded", () => {
-  // Try to restore saved data first
-  const hasRestoredData = restoreFromLocalStorage();
+  // Migrate old single-invoice data to new structure if needed
+  migrateToMultiInvoice();
 
-  // Only load sample data if no saved data exists
-  if (!hasRestoredData) {
-    loadSampleData();
+  // Get current data
+  const saved = localStorage.getItem(STORAGE_KEY);
+  let data = saved ? JSON.parse(saved) : null;
+
+  // If no data exists, create sample invoice
+  if (!data || !data.invoices || data.invoices.length === 0) {
+    createSampleInvoice();
+    data = JSON.parse(localStorage.getItem(STORAGE_KEY));
   }
 
-  // Setup auto-save after initial load
+  // Always show dashboard (which now has at least the sample invoice)
+  showDashboard();
+
+  // Setup auto-save and dashboard listeners
   setupAutoSave();
+  setupDashboardListeners();
+
+  // Setup back to dashboard button
+  document.getElementById('backToDashboardBtn').addEventListener('click', () => {
+    // Save current work before going back
+    saveToLocalStorage();
+    showDashboard();
+  });
 });
 
 // Optional: Add a button to clear saved data (for development/testing)
